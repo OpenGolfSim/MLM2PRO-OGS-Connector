@@ -3,7 +3,7 @@
  <class>SettingsForm</class>
  <widget class="QWidget" name="SettingsForm">
   <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
+   <enum>Qt::WindowModality::ApplicationModal</enum>
   </property>
   <property name="geometry">
    <rect>
@@ -22,7 +22,32 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_8">
        <item>
-        <widget class="QGroupBox" name="r10_settings_groupbox_2">
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="title">
+          <string>Simulator</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_18">
+          <item>
+           <widget class="QLabel" name="simulator_label">
+            <property name="text">
+             <string>Simulator API</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="simulator_combo">
+            <item>
+             <property name="text">
+              <string>None</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="gspro_settings_groupbox">
          <property name="title">
           <string>GSPro</string>
          </property>
@@ -48,7 +73,7 @@
              </size>
             </property>
             <property name="contextMenuPolicy">
-             <enum>Qt::PreventContextMenu</enum>
+             <enum>Qt::ContextMenuPolicy::PreventContextMenu</enum>
             </property>
             <property name="toolTip">
              <string>GSPro IP Address</string>
@@ -177,7 +202,7 @@
                <string>Application Path(Opyional)</string>
               </property>
               <property name="lineWrapMode">
-               <enum>QPlainTextEdit::WidgetWidth</enum>
+               <enum>QPlainTextEdit::LineWrapMode::WidgetWidth</enum>
               </property>
               <property name="placeholderText">
                <string>GSPro Path</string>
@@ -197,9 +222,86 @@
         </widget>
        </item>
        <item>
+        <widget class="QGroupBox" name="ogs_settings_groupbox">
+         <property name="title">
+          <string>OpenGolfSim</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_11">
+          <item>
+           <widget class="QPlainTextEdit" name="ogs_ipaddress">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>31</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>31</height>
+             </size>
+            </property>
+            <property name="contextMenuPolicy">
+             <enum>Qt::ContextMenuPolicy::PreventContextMenu</enum>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IP address of the computer running OpenGolfSim&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="tabChangesFocus">
+             <bool>true</bool>
+            </property>
+            <property name="placeholderText">
+             <string>OpenGolfSim IP Address</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPlainTextEdit" name="ogs_port">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>31</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>31</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The port of the OpenGolfSim API&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="tabChangesFocus">
+             <bool>true</bool>
+            </property>
+            <property name="placeholderText">
+             <string>OpenGolfSim Port</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer_2">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -574,7 +676,7 @@
        <item>
         <spacer name="verticalSpacer_3">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -593,7 +695,7 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0">
            <property name="sizeConstraint">
-            <enum>QLayout::SetMinimumSize</enum>
+            <enum>QLayout::SizeConstraint::SetMinimumSize</enum>
            </property>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -731,7 +833,7 @@
        <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -746,7 +848,7 @@
          <item>
           <spacer name="horizontalSpacer">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>

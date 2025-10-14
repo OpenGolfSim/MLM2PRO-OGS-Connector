@@ -691,7 +691,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.connector_tab.setToolTip("")
 #endif // QT_CONFIG(tooltip)
-        self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"GSPro Connection", None))
+        self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Simulator Connection", None))
         self.gspro_connect_button.setText(QCoreApplication.translate("MainWindow", u"Connect", None))
         self.gspro_status_label.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.club_selection.setText("")

@@ -6,6 +6,7 @@ from enum import Flag, auto
 class LogMessageSystems:
     CONNECTOR = 'Connector'
     GSPRO_CONNECT = 'GSProConnect'
+    OPENGOLFSIM = 'OpenGolfSim'
     WEBCAM_PUTTING = "Webcam Putting"
     EXPUTT_PUTTING = "ExPutt"
     RELAY_SERVER = "Relay Server"

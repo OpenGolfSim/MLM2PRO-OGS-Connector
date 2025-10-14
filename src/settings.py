@@ -4,6 +4,11 @@ from src.settings_base import SettingsBase
 
 
 @dataclass
+class Simulator:
+    GSPRO = "GSPro"
+    OPENGOLFSIM = 'OpenGolfSim'
+
+@dataclass
 class LaunchMonitor:
     MLM2PRO = "Rapsodo MLM2PRO"
     MLM2PRO_BT = 'Rapsodo MLM2PRO BT'
@@ -30,6 +35,7 @@ class Settings(SettingsBase):
                 name='settings',
                 ext='.json'
             ), {
+                "simulator_api": Simulator.GSPRO,
                 "ip_address": "127.0.0.1",
                 "port": 921,
                 "api_version": "1",
@@ -47,7 +53,9 @@ class Settings(SettingsBase):
                 "relay_server_ip_address": "127.0.0.1",
                 "relay_server_port": 9234,
                 'auto_start_all_apps': 'No',
-                'keep_log_history': 'No'
+                'keep_log_history': 'No',
+                "ogs_ip_address": "127.0.0.1",
+                "ogs_port": 3111
             }
         )
         # Removed this from the settings file, specifies the
@@ -114,6 +122,9 @@ class Settings(SettingsBase):
             self.mevo_plus = {
                 "offline_mode": "No"
             }
+            save = True
+        if not hasattr(self, 'simulator_api'):
+            self.simulator_api = Simulator.GSPRO
             save = True
         if save:
             super().save()

@@ -16,9 +16,10 @@ from src.device_launch_monitor_relay_server import DeviceLaunchMonitorRelayServe
 from src.devices import Devices
 from src.log_message import LogMessage, LogMessageSystems, LogMessageTypes
 from src.putting_settings import PuttingSettings
-from src.settings import Settings, LaunchMonitor
+from src.settings import Settings, LaunchMonitor, Simulator
 from src.PuttingForm import PuttingForm
 from src.gspro_connection import GSProConnection
+from src.ogs_connection import OpenGolfSimConnection
 from src.device_launch_monitor_screenshot import DeviceLaunchMonitorScreenshot
 from src.putting import Putting
 
@@ -49,6 +50,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.__setup_logging()
         self.settings = Settings(self.app_paths)
         self.gspro_connection = GSProConnection(self)
+        self.ogs_connection = OpenGolfSimConnection(self)
         self.settings_form = SettingsForm(settings=self.settings, app_paths=self.app_paths)
         self.putting_settings = PuttingSettings(self.app_paths)
         self.putting_settings_form = PuttingForm(main_window=self)
@@ -125,7 +127,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __auto_start(self):
         if self.settings.auto_start_all_apps == 'Yes':
-            if len(self.settings.gspro_path) > 0 and len(self.settings.grspo_window_name) and os.path.exists(self.settings.gspro_path):
+            if self.settings.simulator_api == Simulator.GSPRO and len(self.settings.gspro_path) > 0 and len(self.settings.grspo_window_name) and os.path.exists(self.settings.gspro_path):
                 self.log_message(LogMessageTypes.LOG_WINDOW, LogMessageSystems.CONNECTOR, f'Starting GSPro')
                 self.gspro_connection.gspro_start(self.settings, True)
             if self.settings.device_id != LaunchMonitor.RELAY_SERVER and \
@@ -206,10 +208,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         webbrowser.open(url, new=2) # 2 = open in new tab
 
     def __gspro_connect(self):
-        if self.gspro_connection.connected:
-            self.gspro_connection.disconnect_from_gspro()
-        else:
-            self.gspro_connection.connect_to_gspro()
+        if self.settings.simulator_api == Simulator.GSPRO:
+            if self.gspro_connection.connected:
+                self.gspro_connection.disconnect_from_gspro()
+            else:
+                self.gspro_connection.connect_to_gspro()
+        elif self.settings.simulator_api == Simulator.OPENGOLFSIM:
+            logging.debug(f'{MainWindow.app_name} Connecting to OpenGolfSim API...')
+            if self.ogs_connection.connected:
+                self.ogs_connection.disconnect_from_ogs()
+            else:
+                self.ogs_connection.connect_to_ogs()
+
 
     def __about(self):
         QMessageBox.information(self, "About", f"{MainWindow.app_name}\nVersion: {MainWindow.version}")

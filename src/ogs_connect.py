@@ -11,7 +11,7 @@ from src.custom_exception import SimTCPConnectionTimeout, SimTCPConnectionUnknow
     SimTCPConnectionClientClosedConnection, SimTCPConnectionSocketError
 
 
-class GSProConnect(QObject):
+class OpenGolfSimConnect(QObject):
 
     successful_send = 200
 
@@ -22,7 +22,7 @@ class GSProConnect(QObject):
         self._api_version = api_version
         self._shot_number = 1
         self._connected = False
-        super(GSProConnect, self).__init__()
+        super(OpenGolfSimConnect, self).__init__()
 
     def init_socket(self, ip_address: str, port: int) -> None:
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -47,20 +47,20 @@ class GSProConnect(QObject):
                     Event().wait(0.5)
                     continue
                 except socket.error as e:
-                    msg = f'GSPro Connector socket error when trying to send shot, Exception: {format(e)}'
+                    msg = f'OpenGolfSim socket error when trying to send shot, Exception: {format(e)}'
                     logging.debug(msg)
                     raise SimTCPConnectionSocketError(msg)
                 except Exception as e:
-                    msg = f"GSPro Connector unknown error when trying to send shot, Exception: {format(e)}"
+                    msg = f"OpenGolfSim unknown error when trying to send shot, Exception: {format(e)}"
                     logging.debug(msg)
                     raise SimTCPConnectionUnknownError(msg)
                 else:
                     if len(msg) == 0:
-                        msg = f"GSPro closed the connection"
+                        msg = f"OpenGolfSim closed the connection"
                         logging.debug(msg)
                         raise SimTCPConnectionClientClosedConnection(msg)
                     else:
-                        logging.debug(f"Response from GSPro: {msg}")
+                        logging.debug(f"Response from OpenGolfSim: {msg}")
                         return msg
 
     def launch_ball(self, ball_data: BallData) -> None:
@@ -71,8 +71,8 @@ class GSProConnect(QObject):
                 "ShotNumber": self._shot_number,
                 "APIversion": self._api_version
             }
-            payload = device | ball_data.to_gspro()
-            logging.debug(f'Launch Ball payload: {payload} ball_data.to_gspro(): {ball_data.to_gspro()}')
+            payload = device | ball_data.to_opengolfsim()
+            logging.debug(f'Launch Ball payload: {payload} ball_data.to_opengolfsim(): {ball_data.to_opengolfsim()}')
             self.send_msg(json.dumps(payload).encode("utf-8"))
             self._shot_number += 1
 

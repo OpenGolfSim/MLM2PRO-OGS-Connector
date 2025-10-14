@@ -163,6 +163,29 @@ class BallData:
                 keys.append(getattr(BallColor, key))
         return keys
 
+    def to_opengolfsim(self):
+        payload = {
+            "shot": {
+                "ballSpeed": self.speed,
+                "spinAxis": self.spin_axis,
+                "spinSpeed": self.total_spin,
+                "horizontalLaunchAngle": self.hla,
+                "verticalLaunchAngle": self.vla
+                # "Backspin": self.back_spin,
+                # "SideSpin": self.side_spin,
+                # "CarryDistance": 0
+            },
+            "club": {
+                "angleOfAttack": self.angle_of_attack,
+                "clubPath": self.path,
+                "clubSpeed": self.club_speed,
+                "faceToPath": self.face_to_path,
+                "faceToTarget": self.face_to_target,
+                "speedAtImpact": self.speed_at_impact
+            }
+        }
+        return payload
+
     def to_gspro(self):
         payload = {
             "BallData": {

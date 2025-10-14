@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'SettingsForm.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.2
+## Created by: Qt User Interface Compiler version 6.7.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -23,7 +23,7 @@ class Ui_SettingsForm(object):
     def setupUi(self, SettingsForm):
         if not SettingsForm.objectName():
             SettingsForm.setObjectName(u"SettingsForm")
-        SettingsForm.setWindowModality(Qt.ApplicationModal)
+        SettingsForm.setWindowModality(Qt.WindowModality.ApplicationModal)
         SettingsForm.resize(981, 510)
         self.horizontalLayout_7 = QHBoxLayout(SettingsForm)
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
@@ -31,25 +31,43 @@ class Ui_SettingsForm(object):
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.verticalLayout_8 = QVBoxLayout()
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
-        self.r10_settings_groupbox_2 = QGroupBox(SettingsForm)
-        self.r10_settings_groupbox_2.setObjectName(u"r10_settings_groupbox_2")
-        self.verticalLayout_7 = QVBoxLayout(self.r10_settings_groupbox_2)
+        self.groupBox_3 = QGroupBox(SettingsForm)
+        self.groupBox_3.setObjectName(u"groupBox_3")
+        self.horizontalLayout_18 = QHBoxLayout(self.groupBox_3)
+        self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
+        self.simulator_label = QLabel(self.groupBox_3)
+        self.simulator_label.setObjectName(u"simulator_label")
+
+        self.horizontalLayout_18.addWidget(self.simulator_label)
+
+        self.simulator_combo = QComboBox(self.groupBox_3)
+        self.simulator_combo.addItem("")
+        self.simulator_combo.setObjectName(u"simulator_combo")
+
+        self.horizontalLayout_18.addWidget(self.simulator_combo)
+
+
+        self.verticalLayout_8.addWidget(self.groupBox_3)
+
+        self.gspro_settings_groupbox = QGroupBox(SettingsForm)
+        self.gspro_settings_groupbox.setObjectName(u"gspro_settings_groupbox")
+        self.verticalLayout_7 = QVBoxLayout(self.gspro_settings_groupbox)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
-        self.ipaddress_edit = QPlainTextEdit(self.r10_settings_groupbox_2)
+        self.ipaddress_edit = QPlainTextEdit(self.gspro_settings_groupbox)
         self.ipaddress_edit.setObjectName(u"ipaddress_edit")
-        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.ipaddress_edit.sizePolicy().hasHeightForWidth())
         self.ipaddress_edit.setSizePolicy(sizePolicy)
         self.ipaddress_edit.setMinimumSize(QSize(0, 31))
         self.ipaddress_edit.setMaximumSize(QSize(16777215, 31))
-        self.ipaddress_edit.setContextMenuPolicy(Qt.PreventContextMenu)
+        self.ipaddress_edit.setContextMenuPolicy(Qt.ContextMenuPolicy.PreventContextMenu)
         self.ipaddress_edit.setTabChangesFocus(True)
 
         self.verticalLayout_7.addWidget(self.ipaddress_edit)
 
-        self.gspro_window_name = QPlainTextEdit(self.r10_settings_groupbox_2)
+        self.gspro_window_name = QPlainTextEdit(self.gspro_settings_groupbox)
         self.gspro_window_name.setObjectName(u"gspro_window_name")
         sizePolicy.setHeightForWidth(self.gspro_window_name.sizePolicy().hasHeightForWidth())
         self.gspro_window_name.setSizePolicy(sizePolicy)
@@ -58,10 +76,10 @@ class Ui_SettingsForm(object):
 
         self.verticalLayout_7.addWidget(self.gspro_window_name)
 
-        self.port_edit = QPlainTextEdit(self.r10_settings_groupbox_2)
+        self.port_edit = QPlainTextEdit(self.gspro_settings_groupbox)
         self.port_edit.setObjectName(u"port_edit")
         self.port_edit.setEnabled(True)
-        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.port_edit.sizePolicy().hasHeightForWidth())
@@ -72,7 +90,7 @@ class Ui_SettingsForm(object):
 
         self.verticalLayout_7.addWidget(self.port_edit)
 
-        self.gspro_api_window_name = QPlainTextEdit(self.r10_settings_groupbox_2)
+        self.gspro_api_window_name = QPlainTextEdit(self.gspro_settings_groupbox)
         self.gspro_api_window_name.setObjectName(u"gspro_api_window_name")
         sizePolicy.setHeightForWidth(self.gspro_api_window_name.sizePolicy().hasHeightForWidth())
         self.gspro_api_window_name.setSizePolicy(sizePolicy)
@@ -83,17 +101,17 @@ class Ui_SettingsForm(object):
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.gspro_path_edit = QPlainTextEdit(self.r10_settings_groupbox_2)
+        self.gspro_path_edit = QPlainTextEdit(self.gspro_settings_groupbox)
         self.gspro_path_edit.setObjectName(u"gspro_path_edit")
         sizePolicy.setHeightForWidth(self.gspro_path_edit.sizePolicy().hasHeightForWidth())
         self.gspro_path_edit.setSizePolicy(sizePolicy)
         self.gspro_path_edit.setMinimumSize(QSize(300, 0))
         self.gspro_path_edit.setMaximumSize(QSize(16777215, 31))
-        self.gspro_path_edit.setLineWrapMode(QPlainTextEdit.WidgetWidth)
+        self.gspro_path_edit.setLineWrapMode(QPlainTextEdit.LineWrapMode.WidgetWidth)
 
         self.horizontalLayout_2.addWidget(self.gspro_path_edit)
 
-        self.file_browse_button = QPushButton(self.r10_settings_groupbox_2)
+        self.file_browse_button = QPushButton(self.gspro_settings_groupbox)
         self.file_browse_button.setObjectName(u"file_browse_button")
 
         self.horizontalLayout_2.addWidget(self.file_browse_button)
@@ -102,9 +120,38 @@ class Ui_SettingsForm(object):
         self.verticalLayout_7.addLayout(self.horizontalLayout_2)
 
 
-        self.verticalLayout_8.addWidget(self.r10_settings_groupbox_2)
+        self.verticalLayout_8.addWidget(self.gspro_settings_groupbox)
 
-        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.ogs_settings_groupbox = QGroupBox(SettingsForm)
+        self.ogs_settings_groupbox.setObjectName(u"ogs_settings_groupbox")
+        self.verticalLayout_11 = QVBoxLayout(self.ogs_settings_groupbox)
+        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
+        self.ogs_ipaddress = QPlainTextEdit(self.ogs_settings_groupbox)
+        self.ogs_ipaddress.setObjectName(u"ogs_ipaddress")
+        sizePolicy.setHeightForWidth(self.ogs_ipaddress.sizePolicy().hasHeightForWidth())
+        self.ogs_ipaddress.setSizePolicy(sizePolicy)
+        self.ogs_ipaddress.setMinimumSize(QSize(0, 31))
+        self.ogs_ipaddress.setMaximumSize(QSize(16777215, 31))
+        self.ogs_ipaddress.setContextMenuPolicy(Qt.ContextMenuPolicy.PreventContextMenu)
+        self.ogs_ipaddress.setTabChangesFocus(True)
+
+        self.verticalLayout_11.addWidget(self.ogs_ipaddress)
+
+        self.ogs_port = QPlainTextEdit(self.ogs_settings_groupbox)
+        self.ogs_port.setObjectName(u"ogs_port")
+        self.ogs_port.setEnabled(True)
+        sizePolicy1.setHeightForWidth(self.ogs_port.sizePolicy().hasHeightForWidth())
+        self.ogs_port.setSizePolicy(sizePolicy1)
+        self.ogs_port.setMinimumSize(QSize(0, 31))
+        self.ogs_port.setMaximumSize(QSize(16777215, 31))
+        self.ogs_port.setTabChangesFocus(True)
+
+        self.verticalLayout_11.addWidget(self.ogs_port)
+
+
+        self.verticalLayout_8.addWidget(self.ogs_settings_groupbox)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_8.addItem(self.verticalSpacer_2)
 
@@ -266,7 +313,7 @@ class Ui_SettingsForm(object):
 
         self.verticalLayout_5.addWidget(self.groupBox_2)
 
-        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_5.addItem(self.verticalSpacer_3)
 
@@ -279,7 +326,7 @@ class Ui_SettingsForm(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.verticalLayout_3.setSizeConstraint(QLayout.SetMinimumSize)
+        self.verticalLayout_3.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
         self.horizontalLayout_9 = QHBoxLayout()
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
         self.label_7 = QLabel(SettingsForm)
@@ -346,13 +393,13 @@ class Ui_SettingsForm(object):
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_15)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_2.addItem(self.verticalSpacer)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
@@ -383,7 +430,11 @@ class Ui_SettingsForm(object):
 
     def retranslateUi(self, SettingsForm):
         SettingsForm.setWindowTitle(QCoreApplication.translate("SettingsForm", u"Settings", None))
-        self.r10_settings_groupbox_2.setTitle(QCoreApplication.translate("SettingsForm", u"GSPro", None))
+        self.groupBox_3.setTitle(QCoreApplication.translate("SettingsForm", u"Simulator", None))
+        self.simulator_label.setText(QCoreApplication.translate("SettingsForm", u"Simulator API", None))
+        self.simulator_combo.setItemText(0, QCoreApplication.translate("SettingsForm", u"None", None))
+
+        self.gspro_settings_groupbox.setTitle(QCoreApplication.translate("SettingsForm", u"GSPro", None))
 #if QT_CONFIG(tooltip)
         self.ipaddress_edit.setToolTip(QCoreApplication.translate("SettingsForm", u"GSPro IP Address", None))
 #endif // QT_CONFIG(tooltip)
@@ -405,6 +456,15 @@ class Ui_SettingsForm(object):
 #endif // QT_CONFIG(tooltip)
         self.gspro_path_edit.setPlaceholderText(QCoreApplication.translate("SettingsForm", u"GSPro Path", None))
         self.file_browse_button.setText(QCoreApplication.translate("SettingsForm", u"Browse", None))
+        self.ogs_settings_groupbox.setTitle(QCoreApplication.translate("SettingsForm", u"OpenGolfSim", None))
+#if QT_CONFIG(tooltip)
+        self.ogs_ipaddress.setToolTip(QCoreApplication.translate("SettingsForm", u"<html><head/><body><p>The IP address of the computer running OpenGolfSim</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.ogs_ipaddress.setPlaceholderText(QCoreApplication.translate("SettingsForm", u"OpenGolfSim IP Address", None))
+#if QT_CONFIG(tooltip)
+        self.ogs_port.setToolTip(QCoreApplication.translate("SettingsForm", u"<html><head/><body><p>The port of the OpenGolfSim API</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.ogs_port.setPlaceholderText(QCoreApplication.translate("SettingsForm", u"OpenGolfSim Port", None))
         self.label_6.setText(QCoreApplication.translate("SettingsForm", u"Launch Monitor", None))
         self.launch_monitor_combo.setItemText(0, QCoreApplication.translate("SettingsForm", u"None", None))
         self.launch_monitor_combo.setItemText(1, QCoreApplication.translate("SettingsForm", u"New Item", None))
