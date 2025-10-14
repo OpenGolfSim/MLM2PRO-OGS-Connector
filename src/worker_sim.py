@@ -1,22 +1,22 @@
 import traceback
 from PySide6.QtCore import Signal
 
-from src.gspro_connect import GSProConnect
 from src.worker_base import WorkerBase
 
 
-class WorkerGspro(WorkerBase):
+class WorkerSim(WorkerBase):
     sent = Signal(object or None)
 
-    def __init__(self, gspro_connection: GSProConnect):
+    def __init__(self, sim_connect):
         super().__init__()
-        self.gspro_connection = gspro_connection
+        self.sim_connect = sim_connect
 
     def run(self, balldata=None):
         if balldata is not None:
             try:
+                print(f'WorkerSim: {balldata.to_json()}')
                 self.started.emit()
-                self.gspro_connection.launch_ball(balldata)
+                self.sim_connect.launch_ball(balldata)
             except Exception as e:
                 traceback.print_exc()
                 self.error.emit((e, traceback.format_exc()))

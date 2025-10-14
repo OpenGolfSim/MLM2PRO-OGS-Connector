@@ -4,20 +4,19 @@ import re
 import traceback
 from threading import Event
 from PySide6.QtCore import Signal
-from src.gspro_connect import GSProConnect
 from src.worker_base import WorkerBase
 from src.worker_screenshot_device_base import WorkerScreenshotBase
 
 
-class WorkerGSProMessages(WorkerBase):
+class WorkerSimMessages(WorkerBase):
     player_info = 201
     club_selected = Signal(object)
-    gspro_message = Signal(object)
+    sim_message = Signal(object)
 
-    def __init__(self, gspro_connection: GSProConnect):
+    def __init__(self, sim_connect):
         super().__init__()
-        self.gspro_connection = gspro_connection
-        self.name = 'WorkerGSProMessages'
+        self.sim_connect = sim_connect
+        self.name = 'WorkerSimMessages'
 
     def run(self):
         self.started.emit()
@@ -27,12 +26,12 @@ class WorkerGSProMessages(WorkerBase):
             Event().wait(250/1000)
             # When _pause is clear we wait(suspended) if set we process
             self._pause.wait()
-            if not self._shutdown.is_set() and self.gspro_connection is not None and self.gspro_connection.connected():
+            if not self._shutdown.is_set() and self.sim_connect is not None and self.sim_connect.connected():
                 try:
-                    message = self.gspro_connection.check_for_message()
+                    message = self.sim_connect.check_for_message()
                     if len(message) > 0:
-                        logging.debug(f'{self.name}: GSPro received data: {message}')
-                        self.gspro_message.emit(message)
+                        logging.debug(f'{self.name}: Received data: {message}')
+                        self.sim_message.emit(message)
                         self.__process_message(message)
                 except Exception as e:
                     if not isinstance(e, ValueError):
@@ -51,6 +50,6 @@ class WorkerGSProMessages(WorkerBase):
                 msg = json.loads(json_message)
                 messages[str(msg['Code'])] = msg
                 # Check if club selection message
-                if msg['Code'] == WorkerGSProMessages.player_info:
+                if msg['Code'] == WorkerSimMessages.player_info:
                     self.club_selected.emit(msg)
         return messages

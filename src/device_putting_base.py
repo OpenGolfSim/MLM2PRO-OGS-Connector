@@ -20,12 +20,12 @@ class DevicePuttingBase(DeviceBase):
         return
 
     def setup_signals(self):
-        self.main_window.gspro_connection.club_selected.connect(self.club_selected)
+        self.main_window.sim_connection.club_selected.connect(self.club_selected)
         self.main_window.putting_settings_form.cancel.connect(self.resume)
         self.main_window.actionPuttingSettings.triggered.connect(self.pause)
-        self.main_window.gspro_connection.disconnected_from_gspro.connect(self.pause)
-        self.main_window.gspro_connection.connected_to_gspro.connect(self.resume)
-        self.device_worker.shot.connect(self.main_window.gspro_connection.send_shot_worker.run)
+        self.main_window.sim_connection.disconnected_from_sim.connect(self.pause)
+        self.main_window.sim_connection.connected_to_sim.connect(self.resume)
+        self.device_worker.shot.connect(self.main_window.sim_connection.send_shot_worker.run)
 
     def club_selected(self, club_data):
         if self.device_worker is not None:
@@ -39,7 +39,7 @@ class DevicePuttingBase(DeviceBase):
         enabled = True
         if self.is_running():
             msg = 'Stop'
-            if self.main_window.gspro_connection.connected:
+            if self.main_window.sim_connection.connected:
                 color = 'orange'
                 status = 'Paused'
             else:
@@ -56,7 +56,7 @@ class DevicePuttingBase(DeviceBase):
         self.main_window.putting_server_button.setText('Stop')
         msg = 'Running'
         color = 'green'
-        if not self.main_window.gspro_connection.connected:
+        if not self.main_window.sim_connection.connected:
             msg = 'Waiting GSPro'
             color = 'red'
         self.main_window.putting_server_status_label.setText(msg)
