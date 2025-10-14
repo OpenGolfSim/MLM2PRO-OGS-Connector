@@ -16,9 +16,11 @@ from src.device_launch_monitor_relay_server import DeviceLaunchMonitorRelayServe
 from src.devices import Devices
 from src.log_message import LogMessage, LogMessageSystems, LogMessageTypes
 from src.putting_settings import PuttingSettings
-from src.settings import Settings, LaunchMonitor
+from src.settings import Settings, LaunchMonitor, Simulator
 from src.PuttingForm import PuttingForm
-from src.gspro_connection import GSProConnection
+from src.sim_connection import SimConnection
+# from src.gspro_connection import GSProConnection
+# from src.ogs_connection import OpenGolfSimConnection
 from src.device_launch_monitor_screenshot import DeviceLaunchMonitorScreenshot
 from src.putting import Putting
 
@@ -31,8 +33,8 @@ class LogTableCols:
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
-    version = 'V1.04.22 Beta'
-    app_name = 'MLM2PRO-GSPro-Connector'
+    version = 'V2.0.0 Beta'
+    app_name = 'MLM2PRO-Universal-Connector'
     good_shot_color = '#62ff00'
     good_putt_color = '#fbff00'
     bad_shot_color = '#ff3800'
@@ -48,7 +50,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.app_paths.setup()
         self.__setup_logging()
         self.settings = Settings(self.app_paths)
-        self.gspro_connection = GSProConnection(self)
+        self.sim_connection = SimConnection(self, simulator_api=self.settings.simulator_api)
         self.settings_form = SettingsForm(settings=self.settings, app_paths=self.app_paths)
         self.putting_settings = PuttingSettings(self.app_paths)
         self.putting_settings_form = PuttingForm(main_window=self)
@@ -86,12 +88,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __setup_ui(self):
         self.__setup_launch_monitor()
+        self.sim_group_box.setTitle(f"{self.settings.simulator_api} Connection")
         self.actionExit.triggered.connect(self.__exit)
         self.actionAbout.triggered.connect(self.__about)
         self.actionSettings.triggered.connect(self.__settings)
         self.actionDonate.triggered.connect(self.__donate)
         self.actionShop.triggered.connect(self.__shop)
-        self.gspro_connect_button.clicked.connect(self.__gspro_connect)
+        self.gspro_connect_button.clicked.connect(self.__sim_connect)
         self.main_tab.setCurrentIndex(0)
         #self.log_table.horizontalHeader().setStretchLastSection(True)
         self.log_table.setHorizontalHeaderLabels(['Date', 'Type', 'System', 'Message'])
@@ -125,9 +128,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __auto_start(self):
         if self.settings.auto_start_all_apps == 'Yes':
-            if len(self.settings.gspro_path) > 0 and len(self.settings.grspo_window_name) and os.path.exists(self.settings.gspro_path):
+            if self.settings.simulator_api == Simulator.GSPRO and len(self.settings.gspro_path) > 0 and len(self.settings.grspo_window_name) and os.path.exists(self.settings.gspro_path):
                 self.log_message(LogMessageTypes.LOG_WINDOW, LogMessageSystems.CONNECTOR, f'Starting GSPro')
-                self.gspro_connection.gspro_start(self.settings, True)
+                self.sim_connection.gspro_start(self.settings, True)
+                # self.gspro_connection.gspro_start(self.settings, True)
             if self.settings.device_id != LaunchMonitor.RELAY_SERVER and \
                     self.settings.device_id != LaunchMonitor.MLM2PRO_BT and \
                     self.settings.device_id != LaunchMonitor.R10_BT and \
@@ -187,8 +191,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.close()
 
     def closeEvent(self, event: QShowEvent) -> None:
-        logging.debug(f'{MainWindow.app_name} Closing gspro connection')
-        self.gspro_connection.shutdown()
+        logging.debug(f'{MainWindow.app_name} Closing simulator connection')
+        self.sim_connection.shutdown()
         logging.debug(f'{MainWindow.app_name} Closing putting')
         self.putting.shutdown()
         logging.debug(f'{MainWindow.app_name} Closing launch monitor connection')
@@ -205,11 +209,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         url = "https://cascadia3dpd.com"
         webbrowser.open(url, new=2) # 2 = open in new tab
 
-    def __gspro_connect(self):
-        if self.gspro_connection.connected:
-            self.gspro_connection.disconnect_from_gspro()
+    def __sim_connect(self):
+        if self.sim_connection.connected:
+            self.sim_connection.disconnect_sim()
         else:
-            self.gspro_connection.connect_to_gspro()
+            self.sim_connection.connect_sim()
+
 
     def __about(self):
         QMessageBox.information(self, "About", f"{MainWindow.app_name}\nVersion: {MainWindow.version}")

@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QWidget, QMessageBox, QFileDialog
 from src.SettingsForm_ui import Ui_SettingsForm
 from src.appdata import AppDataPaths
 from src.devices import Devices
-from src.settings import Settings, LaunchMonitor
+from src.settings import Settings, LaunchMonitor, Simulator
 
 
 class SettingsForm(QWidget, Ui_SettingsForm):
@@ -26,6 +26,13 @@ class SettingsForm(QWidget, Ui_SettingsForm):
         self.mevo_offline_mode_combo.addItems(['Yes', 'No'])
         self.launch_monitor_combo.clear()
         self.launch_monitor_combo.addItems(SettingsForm.launchmonitor_as_list())
+
+        self.simulator_combo.clear()
+        self.simulator_combo.addItems(SettingsForm.simulator_as_list())
+
+        # self.ogs_settings_groupbox
+        # self.gspro_settings_groupbox
+
         self.close_button.clicked.connect(self.__close)
         self.save_button.clicked.connect(self.__save)
         self.file_browse_button.clicked.connect(self.__file_dialog)
@@ -40,6 +47,14 @@ class SettingsForm(QWidget, Ui_SettingsForm):
         self.close()
 
     @staticmethod
+    def simulator_as_list():
+        keys = []
+        for key in Simulator.__dict__:
+            if key != '__' not in key:
+                keys.append(getattr(Simulator, key))
+        return keys
+
+    @staticmethod
     def launchmonitor_as_list():
         keys = []
         for key in LaunchMonitor.__dict__:
@@ -49,11 +64,14 @@ class SettingsForm(QWidget, Ui_SettingsForm):
 
     def __save(self):
         if self.__valid():
+            self.settings.simulator_api = self.simulator_combo.currentText()
             self.settings.ip_address = self.ipaddress_edit.toPlainText()
             self.settings.port = int(self.port_edit.toPlainText())
             self.settings.gspro_path = self.gspro_path_edit.toPlainText()
             self.settings.grspo_window_name = self.gspro_window_name.toPlainText()
             self.settings.gspro_api_window_name = self.gspro_api_window_name.toPlainText()
+            self.settings.ogs_ip_address = self.ogs_ipaddress.toPlainText()
+            self.settings.ogs_port = int(self.ogs_port.toPlainText())
             self.settings.device_id = self.launch_monitor_combo.currentText()
             self.settings.default_device = self.default_device_combo.currentText()
             self.settings.relay_server_ip_address = self.relay_server_ip_edit.toPlainText()
@@ -89,11 +107,16 @@ class SettingsForm(QWidget, Ui_SettingsForm):
         return error
 
     def __load_values(self):
+        self.simulator_combo.setCurrentText(self.settings.simulator_api)
         self.ipaddress_edit.setPlainText(self.settings.ip_address)
         self.port_edit.setPlainText(str(self.settings.port))
         self.gspro_path_edit.setPlainText(str(self.settings.gspro_path))
         self.gspro_window_name.setPlainText(str(self.settings.grspo_window_name))
         self.gspro_api_window_name.setPlainText(str(self.settings.gspro_api_window_name))
+
+        self.ogs_ipaddress.setPlainText(self.settings.ogs_ip_address)
+        self.ogs_port.setPlainText(str(self.settings.ogs_port))
+
         self.launch_monitor_combo.setCurrentText(self.settings.device_id)
         device = 'None'
         if hasattr(self.settings, 'default_device') and self.settings.default_device != '':

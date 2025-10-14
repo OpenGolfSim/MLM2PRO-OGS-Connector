@@ -7,11 +7,11 @@ import select
 from PySide6.QtCore import QObject
 
 from src.ball_data import BallData
-from src.custom_exception import GSProConnectionTimeout, GSProConnectionUknownError, \
-    GSProConnectionGSProClosedConnection, GSProConnectionSocketError
+from src.custom_exception import SimTCPConnectionTimeout, SimTCPConnectionUnknownError, \
+    SimTCPConnectionClientClosedConnection, SimTCPConnectionSocketError
 
 
-class GSProConnect(QObject):
+class ConnectBase(QObject):
 
     successful_send = 200
 
@@ -22,7 +22,7 @@ class GSProConnect(QObject):
         self._api_version = api_version
         self._shot_number = 1
         self._connected = False
-        super(GSProConnect, self).__init__()
+        super(ConnectBase, self).__init__()
 
     def init_socket(self, ip_address: str, port: int) -> None:
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -43,38 +43,31 @@ class GSProConnect(QObject):
                 except socket.timeout:
                     logging.info('Timed out. Retrying...')
                     if attempt >= attempts-1:
-                        raise GSProConnectionTimeout(f'Failed to send shot to GSPro after {attempts} attempts.')
+                        raise SimTCPConnectionTimeout(f'Failed to send shot to simulator after {attempts} attempts.')
                     Event().wait(0.5)
                     continue
                 except socket.error as e:
-                    msg = f'GSPro Connector socket error when trying to send shot, Exception: {format(e)}'
+                    msg = f'Socket error when trying to send shot to simulator, Exception: {format(e)}'
                     logging.debug(msg)
-                    raise GSProConnectionSocketError(msg)
+                    raise SimTCPConnectionSocketError(msg)
                 except Exception as e:
-                    msg = f"GSPro Connector unknown error when trying to send shot, Exception: {format(e)}"
+                    msg = f"Unknown error when trying to send shot to simulator, Exception: {format(e)}"
                     logging.debug(msg)
-                    raise GSProConnectionUknownError(msg)
+                    raise SimTCPConnectionUnknownError(msg)
                 else:
                     if len(msg) == 0:
-                        msg = f"GSPro closed the connection"
+                        msg = f"Simulator closed the connection"
                         logging.debug(msg)
-                        raise GSProConnectionGSProClosedConnection(msg)
+                        raise SimTCPConnectionClientClosedConnection(msg)
                     else:
-                        logging.debug(f"Response from GSPro: {msg}")
+                        logging.debug(f"Response from simulator: {msg}")
                         return msg
 
     def launch_ball(self, ball_data: BallData) -> None:
-        if self._connected:
-            device = {
-                "DeviceID": self._device_id,
-                "Units": self._units,
-                "ShotNumber": self._shot_number,
-                "APIversion": self._api_version
-            }
-            payload = device | ball_data.to_gspro()
-            logging.debug(f'Launch Ball payload: {payload} ball_data.to_gspro(): {ball_data.to_gspro()}')
-            self.send_msg(json.dumps(payload).encode("utf-8"))
-            self._shot_number += 1
+        # logging.debug(f"---- launch_ball -----")
+        print("---------base_launch_ball")
+        logging.debug(ball_data)
+        return
 
     def check_for_message(self):
         message = bytes(0)

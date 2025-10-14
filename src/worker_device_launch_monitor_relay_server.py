@@ -5,7 +5,7 @@ from threading import Event
 
 from PySide6.QtCore import Signal
 
-from src.gspro_connect import GSProConnect
+from src.connect_base import ConnectBase
 from src.settings import Settings
 from src.worker_base import WorkerBase
 
@@ -19,10 +19,10 @@ class WorkerDeviceLaunchMonitorRelayServer(WorkerBase):
     shot_error = Signal(tuple)
     disconnected = Signal()
 
-    def __init__(self, settings: Settings, gspro_connection: GSProConnect):
+    def __init__(self, settings: Settings, sim_connect: ConnectBase):
         WorkerBase.__init__(self)
         self.settings = settings
-        self.gspro_connection = gspro_connection
+        self.sim_connect = sim_connect
         self.name = 'WorkerDeviceLaunchMonitorRelayServer'
         self.connection = None
         self._shutdown = Event()
@@ -56,9 +56,9 @@ class WorkerDeviceLaunchMonitorRelayServer(WorkerBase):
                             data = self.connection.recv(1024)
                             if data is not None and len(data) > 0:
                                 logging.debug(f'{self.name}: connector received data: {data.decode()}')
-                                if self.gspro_connection.connected():
+                                if self.sim_connect.connected():
                                     try:
-                                        msg = self.gspro_connection.send_msg(data)
+                                        msg = self.sim_connect.send_msg(data)
                                         self.send_msg(msg)
                                         self.relay_server_shot.emit(data)
                                         logging.debug(f'{self.name}: connector sent data to GSPro result: {msg.decode()}')

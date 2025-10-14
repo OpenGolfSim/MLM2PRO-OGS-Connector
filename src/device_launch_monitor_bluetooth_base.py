@@ -32,7 +32,7 @@ class DeviceLaunchMonitorBluetoothBase(DeviceBase):
 
     def __setup_signals(self) -> None:
         self.main_window.start_server_button.clicked.connect(self.server_start_stop)
-        self.main_window.gspro_connection.club_selected.connect(self.__club_selected)
+        self.main_window.sim_connection.club_selected.connect(self.__club_selected)
         # Scanner signals
         self._scanner.status_update.connect(self.__status_update)
         self._scanner.device_found.connect(self.device_found)
@@ -87,7 +87,7 @@ class DeviceLaunchMonitorBluetoothBase(DeviceBase):
         self._device.error.connect(self.__device_error)
         self._device.connected.connect(self.__device_connected)
         self._device.update_battery.connect(self.__update_battery)
-        self._device.shot.connect(self.main_window.gspro_connection.send_shot_worker.run)
+        self._device.shot.connect(self.main_window.sim_connection.send_shot_worker.run)
         self._device.launch_monitor_event.connect(self.__launch_monitor_event)
 
     def __launch_monitor_event(self, event: str) -> None:
@@ -96,7 +96,7 @@ class DeviceLaunchMonitorBluetoothBase(DeviceBase):
 
     def __shot_sent(self, ball_data: BallData) -> None:
         print(f"Shot sent: {json.dumps(ball_data.to_json())}")
-        if self.main_window.gspro_connection.connected:
+        if self.main_window.sim_connection.connected:
             self.main_window.shot_sent(ball_data)
 
     def __update_battery(self, battery: int) -> None:

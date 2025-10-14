@@ -5,19 +5,19 @@ class CameraWindowNotFoundException(Exception):
     pass
 
 
-class GSProConnectionTimeout(Exception):
+class SimTCPConnectionTimeout(Exception):
     pass
 
 
-class GSProConnectionSocketError(Exception):
+class SimTCPConnectionSocketError(Exception):
     pass
 
 
-class GSProConnectionUknownError(Exception):
+class SimTCPConnectionUnknownError(Exception):
     pass
 
 
-class GSProConnectionGSProClosedConnection(Exception):
+class SimTCPConnectionClientClosedConnection(Exception):
     pass
 
 

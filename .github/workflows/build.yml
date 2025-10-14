@@ -1,0 +1,23 @@
+name: build/python
+
+on:
+  push:
+    branches:
+      - main
+      - feat/ogs-beta
+    ## otherwise we only build when new tags are pushed
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  pyinstaller-build:
+    runs-on: windows-latest
+    steps:
+      - name: Create Executable
+        uses: sayyid5416/pyinstaller@v1
+        with:
+          python_ver: '3.12'
+          spec: 'MLM2Pro-GSPro-Connector.spec'
+          requirements: 'requirements.txt'
+          upload_exe_with_name: 'MLM2Pro-OGS'
+          options: --onefile, --name "MLM2Pro OGS", --windowed, 

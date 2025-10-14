@@ -32,32 +32,32 @@ class DeviceLaunchMonitorRelayServer(DeviceBase):
 
     def __setup_signals(self):
         self.main_window.start_server_button.clicked.connect(self.__server_start_stop)
-        self.main_window.gspro_connection.club_selected.connect(self.__club_selected)
-        self.main_window.gspro_connection.disconnected_from_gspro.connect(self.pause)
-        self.main_window.gspro_connection.connected_to_gspro.connect(self.resume)
-        self.main_window.gspro_connection.gspro_message.connect(self.__gspro_message)
+        self.main_window.sim_connection.club_selected.connect(self.__club_selected)
+        self.main_window.sim_connection.disconnected_from_sim.connect(self.pause)
+        self.main_window.sim_connection.connected_to_sim.connect(self.resume)
+        self.main_window.sim_connection.sim_message.connect(self.__sim_message)
 
     def __shot_sent(self, shot_data):
         data = json.loads(shot_data.decode("utf-8"))
         balldata = BallData()
         balldata.from_gspro(data)
-        balldata.club = self.main_window.gspro_connection.current_club
-        print(f'balldata: {balldata.to_json()} club: {self.main_window.gspro_connection.current_club}')
+        balldata.club = self.main_window.sim_connection.current_club
+        print(f'balldata: {balldata.to_json()} club: {self.main_window.sim_connection.current_club}')
         balldata.good_shot = True
         if self.prev_shot is None or self.prev_shot.eq(balldata) > 0:
             self.main_window.shot_sent(balldata)
             self.prev_shot = balldata
 
-    def __gspro_message(self, message):
+    def __sim_message(self, message):
         self.device_worker.send_msg(message)
 
     def __server_start_stop(self):
         if self.device_worker is None:
             #QMessageBox.warning(self.main_window, "Starting ELM connector", 'Before starting the relay server ensure your launch monitor is turned on and ready for connection.')
-            self.device_worker = WorkerDeviceLaunchMonitorRelayServer(self.main_window.settings, self.main_window.gspro_connection.gspro_connect)
+            self.device_worker = WorkerDeviceLaunchMonitorRelayServer(self.main_window.settings, self.main_window.sim_connection.sim_connect)
             self.setup_device_thread()
             self.device_worker.start()
-            self.device_worker.club_selected(self.main_window.gspro_connection.current_club)
+            self.device_worker.club_selected(self.main_window.sim_connection.current_club)
             #self.__start_app()
         else:
             self.device_worker.stop()
@@ -86,7 +86,7 @@ class DeviceLaunchMonitorRelayServer(DeviceBase):
         button = 'Start'
         if self.is_running():
             button = 'Stop'
-            if self.main_window.gspro_connection.connected:
+            if self.main_window.sim_connection.connected:
                 color = 'orange'
                 status = 'Paused'
             else:
@@ -103,7 +103,7 @@ class DeviceLaunchMonitorRelayServer(DeviceBase):
         self.main_window.start_server_button.setText('Stop')
         msg = 'Running'
         color = 'green'
-        if not self.main_window.gspro_connection.connected:
+        if not self.main_window.sim_connection.connected:
             msg = 'Waiting GSPro'
             color = 'red'
         self.main_window.server_status_label.setText(msg)
